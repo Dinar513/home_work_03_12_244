@@ -1,5 +1,6 @@
 from typing import Union
 
+
 def get_mask_account(account_num: Union[str]) -> str:
     """Функция для получения маски номера счета"""
     return f"**{account_num[-4:]}"
@@ -14,5 +15,3 @@ def get_mask_card_number(card_num: Union[str]) -> str:
 
 
 print(get_mask_card_number("7000792289606361"))
-
-
