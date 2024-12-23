@@ -1,12 +1,11 @@
 from typing import Union
-
 from src.masks import get_mask_account, get_mask_card_number
 
 
 def mask_account_card(card_number: Union[str]) -> str:
 
     if "Счет" in card_number:
-        return "Счет " + get_mask_account(card_number)
+        return "Счет" + " " + get_mask_card_number(card_number.split()[-1])
 
     if "Maestro" in card_number:
         return "Maestro" + " " + get_mask_card_number(card_number.split()[-1])
@@ -22,6 +21,7 @@ def mask_account_card(card_number: Union[str]) -> str:
 
     if "Visa Gold" in card_number:
         return "Visa Gold" + " " + get_mask_card_number(card_number.split()[-1])
+    raise ValueError("Неизвестный тип карты или счета")
 
 
 print(mask_account_card("Maestro 7000792289606361"))

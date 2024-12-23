@@ -19,26 +19,26 @@ def test_get_mask_card_number():
 
 
 class test_get_mask_account(unittest.TestCase):
-    def testnormalaccount(self):
+    def test_normal_account(self):
         """Тест нормального номера счета"""
         account_num = "73654108430135874305"
         expected = "**4305"
         self.assertEqual(get_mask_account(account_num), expected)
 
-    def testshortaccount(self):
+    def test_short_account(self):
         """Тест короткого номера счета"""
         account_num = "123"  # Меньше 20 символов
         with self.assertRaises(ValueError):
             get_mask_account(account_num)
 
 
-    def testemptyaccount(self):
+    def test_empty_account(self):
         """Тест пустой строки"""
         account_num = ""
         with self.assertRaises(ValueError):
             get_mask_account(account_num)
 
-    def testnonnumeric_account(self):
+    def test_non_numeric_account(self):
         """Тест строки с нечисловыми символами"""
         account_num = "abcd1234123412341234"
         with self.assertRaises(ValueError):
