@@ -1,7 +1,7 @@
 from src.processing import filter_by_state, sort_by_date, transactions
 
 
-def test_filter_by_state():
+def test_filter_by_state() -> None:  # Аннотация возвращаемого типа
     # Тест на фильтрацию по статусу 'EXECUTED'
     executed_transactions = filter_by_state(transactions)
     assert executed_transactions == [
@@ -25,7 +25,7 @@ def test_filter_by_state():
     assert empty_transactions == [], "Ошибка: ожидались пустые результаты для статуса 'UNKNOWN'"
 
 
-def test_sort_by_date():
+def test_sort_by_date() -> None:  # Аннотация возвращаемого типа
     # Тест на сортировку по убыванию
     sorted_transactions_desc = sort_by_date(transactions)
     assert sorted_transactions_desc == [
