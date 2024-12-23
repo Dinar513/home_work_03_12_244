@@ -33,7 +33,7 @@ print(mask_account_card("Счет 73654108430135874305"))
 
 
 def get_date(date_string: Union[str]) -> str:
-    # Разбиваем строку по символу 'T'
+    # Разбиваем строку по символуe  'T'
     date_part = date_string.split("T")[0]
 
     # Разделяем дату на составляющие (год, месяц, день)
