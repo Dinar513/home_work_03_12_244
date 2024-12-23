@@ -35,24 +35,23 @@ print(mask_account_card("Счет 73654108430135874305"))
 def get_date(date_string: Union[str]) -> str:
     # Проверяем, что строка не пустая
     if not date_string:
-        return "Ошибка: отсутствует дата"
+        return "отсутствует дата"
 
     # Проверяем, что формат даты корректный
     try:
         year, month, day = date_string.split("-")
     except ValueError:
-        return "Ошибка: неверный формат даты"
+        return "неверный формат даты"
 
-    # Разбиваем строку по символуe  'T'
+    # Разбиваем строку по символу 'T'
     date_part = date_string.split("T")[0]
 
     # Разделяем дату на составляющие (год, месяц, день)
-    year, month, day = date_string.split("-")
+    year, month, day = date_part.split("-")
 
     # Форматируем дату в нужный формат "ДД.ММ.ГГГГ"
     date_string = f"{day}.{month}.{year}"
 
     return date_string
-
 
 print(get_date("2024-03-11T02:26:18.671407"))
