@@ -1,5 +1,5 @@
 from typing import Union
-from src.masks import get_mask_account, get_mask_card_number
+from src.masks import get_mask_card_number
 
 
 def mask_account_card(card_number: Union[str]) -> str:
@@ -56,5 +56,3 @@ def get_date(date_string: Union[str]) -> str:
 
 
 print(get_date("2024-03-11T02:26:18.671407"))
-
-
