@@ -1,5 +1,6 @@
-from src.masks import get_mask_card_number
+from src.masks import get_mask_card_number, get_mask_account
 from typing import Union
+import unittest
 
 
 def test_get_mask_card_number():
@@ -14,6 +15,34 @@ def test_get_mask_card_number():
 
     # Тест 4: пустая строка
     assert get_mask_card_number("") == "Некорректный номер карты", "Ошибка для пустой строки"
+
+
+
+class test_get_mask_account(unittest.TestCase):
+    def testnormalaccount(self):
+        """Тест нормального номера счета"""
+        account_num = "73654108430135874305"
+        expected = "**4305"
+        self.assertEqual(get_mask_account(account_num), expected)
+
+    def testshortaccount(self):
+        """Тест короткого номера счета"""
+        account_num = "123"  # Меньше 20 символов
+        with self.assertRaises(ValueError):
+            get_mask_account(account_num)
+
+
+    def testemptyaccount(self):
+        """Тест пустой строки"""
+        account_num = ""
+        with self.assertRaises(ValueError):
+            get_mask_account(account_num)
+
+    def testnonnumeric_account(self):
+        """Тест строки с нечисловыми символами"""
+        account_num = "abcd1234123412341234"
+        with self.assertRaises(ValueError):
+            get_mask_account(account_num)
 
 
 
