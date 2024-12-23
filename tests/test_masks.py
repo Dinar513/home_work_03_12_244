@@ -16,3 +16,4 @@ def test_get_mask_card_number():
     assert get_mask_card_number("") == "Некорректный номер карты", "Ошибка для пустой строки"
 
 
+
