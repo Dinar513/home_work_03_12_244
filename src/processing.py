@@ -1,7 +1,8 @@
-from typing import Union
+from typing import List, Dict, Any
+from datetime import datetime
 
 
-def filter_by_state(transactions, state="EXECUTED"):
+def filter_by_state(transactions: List[Dict[str, Any]], state: str = "EXECUTED") -> List[Dict[str, Any]]:
     """Фильтрует список словарей по значению ключа `state`"""
     return [transaction for transaction in transactions if transaction.get("state") == state]
 
@@ -22,10 +23,8 @@ print(executed_transactions)
 canceled_transactions = filter_by_state(transactions, "CANCELED")
 print(canceled_transactions)
 
-from datetime import datetime
 
-
-def sort_by_date(data, descending=True):
+def sort_by_date(data: List[Dict[str, Any]], descending: bool = True) -> List[Dict[str, Any]]:
     """Сортирует список словарей по дате (по ключу 'date')"""
     return sorted(data, key=lambda x: datetime.fromisoformat(x["date"]), reverse=descending)
 
