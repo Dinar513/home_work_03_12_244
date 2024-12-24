@@ -1,12 +1,11 @@
 from typing import Union
-
-from src.masks import get_mask_account, get_mask_card_number
+from src.masks import get_mask_card_number
 
 
 def mask_account_card(card_number: Union[str]) -> str:
 
     if "Счет" in card_number:
-        return "Счет " + get_mask_account(card_number)
+        return "Счет" + " " + get_mask_card_number(card_number.split()[-1])
 
     if "Maestro" in card_number:
         return "Maestro" + " " + get_mask_card_number(card_number.split()[-1])
@@ -22,6 +21,7 @@ def mask_account_card(card_number: Union[str]) -> str:
 
     if "Visa Gold" in card_number:
         return "Visa Gold" + " " + get_mask_card_number(card_number.split()[-1])
+    raise ValueError("Неизвестный тип карты или счета")
 
 
 print(mask_account_card("Maestro 7000792289606361"))
@@ -32,7 +32,17 @@ print(mask_account_card("Visa Gold 7000792289606361"))
 print(mask_account_card("Счет 73654108430135874305"))
 
 
-def get_date(date_string):
+def get_date(date_string: Union[str]) -> str:
+    # Проверяем, что строка не пустая
+    if not date_string:
+        return "отсутствует дата"
+
+    # Проверяем, что формат даты корректный
+    try:
+        year, month, day = date_string.split("-")
+    except ValueError:
+        return "неверный формат даты"
+
     # Разбиваем строку по символу 'T'
     date_part = date_string.split("T")[0]
 
@@ -43,6 +53,5 @@ def get_date(date_string):
     date_string = f"{day}.{month}.{year}"
 
     return date_string
-
 
 print(get_date("2024-03-11T02:26:18.671407"))
