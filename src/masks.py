@@ -20,7 +20,7 @@ def get_mask_card_number(card_num: Union[str]) -> str:
     if not isinstance(card_num, str) or len(card_num) < 6:
         return "Некорректный номер карты"
 
-    return f"{card_num[:4]} {card_num[4:6]}  {card_num[-4:]}"
+    return f"{card_num[:4]} {card_num[4:6]}** ****  {card_num[-4:]}"
 
 
 print(get_mask_card_number("7000792289606361"))
