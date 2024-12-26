@@ -32,7 +32,7 @@ print(mask_account_card("Visa Gold 7000792289606361"))
 print(mask_account_card("Счет 73654108430135874305"))
 
 
-def get_date(date_string: Union[str]) -> str:
+def get_date(date_string: str | None) -> str:
     # Проверяем, что строка не пустая
     if not date_string:
         return "отсутствует дата"
