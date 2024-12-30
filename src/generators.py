@@ -2,11 +2,7 @@ from typing import Union
 
 
 def filter_by_currency(transactions: Union[list, dict], currency: str) -> Union[list, dict]:
-    """
-    Функция, которая принимает на вход список словарей, представляющих транзакции.
-    Функция должна возвращать итератор, который поочередно выдает транзакции, где валюта
-    операции соответствует заданной (например, USD).
-    """
+    """    Функция, принимает на вход список словарей, представляющих транзакции."""
     if currency == "":
         raise ValueError("Не указана валюта транзакции")
     if currency not in ["USD", "RUB", "EURO"]:
@@ -19,8 +15,10 @@ def filter_by_currency(transactions: Union[list, dict], currency: str) -> Union[
 
 
 def transaction_descriptions(transactions: Union[list, dict]) -> str:
-    """Генератор, который принимает список словарей с транзакциями и возвращает описание каждой операции по очереди."""
-
+    """
+    Генератор, который принимает список словарей с транзакциями
+    и возвращает описание каждой операции по очереди
+    """
     if transactions == []:
         raise ValueError("Отсутствует список транзакций")
     for item in transactions:
@@ -34,18 +32,7 @@ def card_number_generator(start: str, stop: str) -> str:
     Генератор, который выдает номера банковских карт в формате XXXX XXXX XXXX XXXX, где X — цифра номера карты.
     Генератор может сгенерировать номера карт в заданном диапазоне от 0000 0000 0000 0001 до 9999 9999 9999 9999.
     Генератор должен принимать начальное и конечное значения для генерации диапазона номеров.
-
-    Пример использования функции:
-    for card_number in card_number_generator(1, 5):
-        print(card_number)
-
-    0000 0000 0000 0001
-    0000 0000 0000 0002
-    0000 0000 0000 0003
-    0000 0000 0000 0004
-    0000 0000 0000 0005
     """
-
     for num in range(start, stop + 1):
         card_number = str(num)
         while len(card_number) < 16:
