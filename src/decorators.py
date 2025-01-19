@@ -1,42 +1,35 @@
-from pathlib import Path
+import os
+from functools import wraps
+from typing import Any, Callable, Optional
 
-current_dir = Path(__file__).parent.parent.resolve()
-log_scripts = current_dir/'data'/'mylog.txt'
 
+def log(filename: Optional[str] = None) -> Callable:
+    """Декоратор, который будет логировать вызов функции
+    и ее результат в файл или в консоль."""
 
-def log(filename=None):
-    """Декоратор, который логирует начало и конец выполнения функции, а также ее результаты и возникшие ошибки"""
-    def logging(func):
-        def wrapper(*args, **kwargs):
-            print('До выполнения функции')
+    def wrapper(func: Callable) -> Callable:
+        @wraps(func)
+        def inner(*args: tuple, **kwargs: dict) -> Any:
+            log_str = ""
             try:
                 result = func(*args, **kwargs)
-                if filename is not None:
-                    with open(log_scripts, "a") as file:
-                        file.write(f'Function {func.__name__}: {"a"}. Inputs: {args}, kwargs: {kwargs}.')
-                else:
-                    with open(log_scripts, "a") as file:
-                        file.write(f'{func.__name__} ok\n')
+                log_str = f"{func.__name__} ok. Result: {result}"
+                return result
+
             except Exception as e:
-                if filename is not None:
-                    with open(filename, "a", encoding="utf-8") as file:
-                        print(f'Function {func.__name__}: {e}. Inputs: {args}, kwargs: {kwargs}.')
-                else:
-                    print(f"Функция: {func.__name__} - ERROR: {e} with inputs: {args}, {kwargs}")
-                result = None
-                print('После выполнения функции')
-            return result
-        return wrapper
-    return logging
+                log_str = f"{func.__name__} {type(e).__name__}: {e}. Inputs: {args}, {kwargs}"
+                raise e
 
+            finally:
+                if filename:  # Запись лога в файл.
+                    if not os.path.exists(r"logs"):
+                        os.mkdir(r"logs")  # Создать папку «logs», если ее нет.
+                    with open(os.path.join(r"logs", filename), "at") as file:
+                        file.write(log_str + "\n")
 
-@log()
-def my_function(x, y):
-    """Функция сложения двух чисел"""
+                else:  # Вывод лога в консоль.
+                    print(log_str)
 
-    # if type(x) != int or type(y) != int:
-    #     raise TypeError("Неверный тип данных")
-    return x + y
+        return inner
 
-
-my_function("2", 3)
+    return wrapper
