@@ -1,40 +1,37 @@
-import json
 import os
-from pathlib import Path
 
 import requests
 from dotenv import load_dotenv
 
-load_dotenv('../.env')
-current_dir = Path(__file__).parent.parent.resolve()
-operations_file_json = current_dir/'data'/'operations.json'
+load_dotenv()
+API_KEY = os.getenv("API_KEY")
+url = "https://api.apilayer.com/exchangerates_data/convert?to={}&from={}&amount={}"
+headers = {"apikey": API_KEY}
 
 
-def sum_transactions(operations_file: dict[str, float]) -> float:
-    """
-    Функция, которая принимает на вход транзакцию и возвращает сумму транзакции (amount) в рублях, тип данных —
-    float. Если транзакция была в USD или EUR, происходит обращение к внешнему API для получения текущего курса
-    валют и конвертации суммы операции в рубли.
-    """
+def get_amount_rub(transactions: dict) -> float:
+    """Функция переводит транзакции в рубли"""
 
-    if operations_file["operationAmount"]["currency"]["code"] == "RUB":
-        return operations_file["operationAmount"]["amount"]
+    amount = transactions.get("operationAmount", {}).get("amount")
+    currency = transactions.get("operationAmount", {}).get("currency", {}).get("code")
+
+    if currency == "RUB":
+        return float(amount)
+    elif currency in ["USD", "EUR"]:
+        response = requests.get(url.format("RUB", currency, amount), headers=headers)
+        if response.status_code == 200:
+            data = response.json()
+            return float(data["result"])
+        else:
+            return 0.0
     else:
-        API_KEY = os.getenv('API_KEY')
-        convert_to = "RUB"
-        convert_from = operations_file["operationAmount"]["currency"]["code"]
-        amount = operations_file["operationAmount"]["amount"]
+        return 0.0
 
-        url = f"https://api.apilayer.com/currency_data/convert?to={convert_to}&from={convert_from}&amount={amount}"
-        payload = {}
-        headers = {
-          "apikey": API_KEY
-        }
 
-        response = requests.request("GET", url, headers=headers, data=payload)
-
-        result = response.text
-
-        parst_result = json.loads(result)
-        returned_result = parst_result
-        return returned_result['result']
+def get_transactions(transactions: list[dict]) -> list[float]:
+    """Функция принимает на вход транзакцию и возвращает сумму транзакции в рублях"""
+    list_transactions = []
+    for transaction in transactions:
+        amount_rub = get_amount_rub(transaction)
+        list_transactions.append(amount_rub)
+    return list_transactions
