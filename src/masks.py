@@ -1,4 +1,18 @@
 from typing import Union
+import logging
+from pathlib import Path
+# from venv import logger
+
+current_dir = Path(__file__).parent.parent.resolve()
+log_utils_file = current_dir/'logs'/'masks.log'
+
+
+logger = logging.getLogger()
+logger.setLevel(logging.DEBUG)
+file_handler = logging.FileHandler(log_utils_file, mode='w',  encoding="utf-8")
+file_formater = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s: %(message)s')
+file_handler.setFormatter(file_formater)
+logger.addHandler(file_handler)
 
 
 def get_mask_account(account_num: Union[str]) -> str:
@@ -7,9 +21,14 @@ def get_mask_account(account_num: Union[str]) -> str:
     if not account_num.isdigit():
         raise ValueError("Номер счета должен содержать только цифры")
     if len(account_num) < 20:
+        logger.error("Некорректная длина номера счета")
         raise ValueError("Номер счета слишком короткий для маскирования")
 
-    return f"{account_num[-4:]}"
+    else:
+        logger.info('Вывод номера счета')
+        return f"**{account_num[-4:]}"
+
+
 
 
 print(get_mask_account("73654108430135874305"))

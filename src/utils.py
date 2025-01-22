@@ -10,7 +10,7 @@ log_utils_file = current_dir/'logs'/'utils.log'
 
 
 logger = logging.getLogger("list_dict_transactions")
-logger.setLevel(logging.INFO)
+logger.setLevel(logging.DEBUG)
 file_handler = logging.FileHandler(log_utils_file, mode='w', encoding="utf-8")
 file_formater = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s: %(message)s')
 file_handler.setFormatter(file_formater)
