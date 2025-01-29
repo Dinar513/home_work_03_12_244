@@ -20,7 +20,7 @@ class Test_Get_Mask_Account(unittest.TestCase):
     def test_normal_account(self) -> None:
         """Тест нормального номера счета"""
         account_num = "73654108430135874305"
-        expected = "4305"
+        expected = "**4305"
         self.assertEqual(get_mask_account(account_num), expected)
 
     def test_short_account(self) -> None:
